@@ -16,26 +16,39 @@ class NoteController extends Controller
         return NoteResource::collection($notes);
     }
 
+    public function indexByUser()
+    {
+        $user = auth()->user();
+        $notes = Note::with('category', 'reminders', 'attachments')->where('user_id', $user->id)->get();
+        return NoteResource::collection($notes);
+    }
+
     public function store(NoteRequest $request)
     {
-        $note = Note::create($request->validated());
+        $user = auth()->user();
+        $data = $request->validated();
+        $data['user_id'] = $user->id;
+        $note = Note::create($data);
         return new NoteResource($note);
     }
 
-    public function show(Note $note)
+    public function show($id)
     {
+        $note = Note::findOrFail($id);
         $note->load('category', 'reminders', 'attachments');
         return new NoteResource($note);
     }
 
-    public function update(NoteRequest $request, Note $note)
+    public function update(NoteRequest $request, $id)
     {
+        $note = Note::findOrFail($id);
         $note->update($request->validated());
         return new NoteResource($note);
     }
 
-    public function destroy(Note $note)
+    public function destroy($id)
     {
+        $note = Note::findOrFail($id);
         $note->delete();
         return response()->json(['message' => 'Note deleted successfully.']);
     }
