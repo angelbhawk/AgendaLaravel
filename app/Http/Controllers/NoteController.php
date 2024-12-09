@@ -28,6 +28,7 @@ class NoteController extends Controller
         $user = auth()->user();
         $data = $request->validated();
         $data['user_id'] = $user->id;
+        $data['category_id'] = 1;
         $note = Note::create($data);
         return new NoteResource($note);
     }
@@ -42,6 +43,7 @@ class NoteController extends Controller
     public function update(NoteRequest $request, $id)
     {
         $note = Note::findOrFail($id);
+        $note['category_id'] = 1;
         $note->update($request->validated());
         return new NoteResource($note);
     }

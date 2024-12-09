@@ -16,11 +16,11 @@ class NoteRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'date' => 'nullable|date',
-            'time' => 'nullable|date_format:H:i:s',
+            'date' => 'nullable|string',
+            'time' => 'nullable',
             'location' => 'nullable|string|max:255',
-            'priority' => 'required|in:low,medium,high',
-            'category_id' => 'required|exists:categories,id'
+            'priority' => 'required',
+            'category_id' => 'nullable'
         ];
     }
 }

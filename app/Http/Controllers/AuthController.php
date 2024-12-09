@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -44,12 +45,19 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'image' => 'nullable|image|max:2048', // Validar que sea una imagen y un tamaño máximo
+            'image_string' => 'nullable|string',
         ]);
 
         // Subir la imagen si está presente
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images/users', 'public');
+        } elseif (!empty($data['image_string'])) {
+            // Caso: Imagen enviada como cadena Base64
+            $decodedImage = base64_decode($data['image_string']);
+            $imageName = uniqid() . '.jpg';
+            $imagePath = 'images/users/' . $imageName;
+            Storage::disk('public')->put($imagePath, $decodedImage);
         }
 
         // Crear el usuario
