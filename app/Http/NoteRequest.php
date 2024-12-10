@@ -19,9 +19,7 @@ class NoteRequest extends FormRequest
             'date' => 'nullable|date',
             'time' => 'nullable|date_format:H:i:s',
             'location' => 'nullable|string|max:255',
-            'priority' => 'required|in:low,medium,high',
-            'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
+            'priority' => 'required|in:low,medium,high'
         ];
     }
 }
