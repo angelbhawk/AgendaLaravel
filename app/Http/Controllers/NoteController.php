@@ -28,7 +28,6 @@ class NoteController extends Controller
         $user = auth()->user();
         $data = $request->validated();
         $data['user_id'] = $user->id;
-        $data['category_id'] = 1;
         $note = Note::create($data);
         return new NoteResource($note);
     }

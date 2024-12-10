@@ -16,7 +16,6 @@ class Note extends Model
         'time',
         'location',
         'priority',
-        'category_id',
         'user_id',
     ];
 
