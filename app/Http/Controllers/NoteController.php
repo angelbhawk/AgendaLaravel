@@ -42,7 +42,6 @@ class NoteController extends Controller
     public function update(NoteRequest $request, $id)
     {
         $note = Note::findOrFail($id);
-        $note['category_id'] = 1;
         $note->update($request->validated());
         return new NoteResource($note);
     }
